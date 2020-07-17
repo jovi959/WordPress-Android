@@ -2,6 +2,7 @@ package org.wordpress.android.ui.posts;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -30,6 +31,7 @@ public class PostSettingsTagsActivity extends LocaleAwareActivity implements Tag
             mTags = getIntent().getStringExtra(KEY_TAGS);
         } else {
             mSite = (SiteModel) savedInstanceState.getSerializable(WordPress.SITE);
+            mTags = savedInstanceState.getString(KEY_TAGS);
         }
         if (mSite == null) {
             ToastUtils.showToast(this, R.string.blog_not_found, ToastUtils.Duration.SHORT);
@@ -64,6 +66,11 @@ public class PostSettingsTagsActivity extends LocaleAwareActivity implements Tag
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable(WordPress.SITE, mSite);
+        outState.putString(KEY_TAGS, mTags);
+    }
+
+    @Override public void onRestoreInstanceState(Bundle savedInstanceState, PersistableBundle persistentState) {
+        super.onRestoreInstanceState(savedInstanceState, persistentState);
     }
 
     @Override
@@ -100,6 +107,7 @@ public class PostSettingsTagsActivity extends LocaleAwareActivity implements Tag
             ((PostSettingsTagsFragment) fragment).closeKeyboard();
         }
     }
+
 
     @Override public void onTagsSelected(@NonNull String selectedTags) {
         mTags = selectedTags;
